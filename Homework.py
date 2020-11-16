@@ -24,31 +24,6 @@ def LUDecomp(table):
             U[i][j] = table[i][j] - sum1
     return L, U
 
-def forward_sub(L, b):
-    n = L.shape[0]
-    x = numpy.zeros(n)
-    for i in range(n):
-        tmp = b[i]
-        for j in range(i-1):
-            tmp -= L[i,j] * x[j]
-        x[i] = tmp / L[i,i]
-    return x
-
-def backward_sub(U, b):
-    n = U.shape[0]
-    x = numpy.zeros(n)
-    for i in range(n-1, -1, -1):
-        tmp = b[i]
-        for j in range(i+1, n):
-            tmp -= U[i,j] * x[j]
-        x[i] = tmp / U[i,i]
-    return x
-
-
-def lu_solve(L, U, b):
-    y = forward_sub(L, b)
-    x = backward_sub(U, y)
-    return x
 
 def Gaussian_Elimination(A,b):
     n =  len(A)
@@ -81,14 +56,18 @@ if __name__ == "__main__":
         [23 ,1 ,5 ,19 ,11 ,7 ,9 ,4 ,16],
         [31 ,5 ,12 ,7 ,13 ,17 ,24 ,3 ,11]
     ])
-    L, U = LUDecomp(matrix)
     b = [2,5,7,1,6,9,4,8,3];
+
+
     # PRINTING ANSERS:
     print("\n\n")
     print("Num Analysis HW 3| number 3")
     print("Vedant Mehta : VM439")
     print("\n Original Matrix:")
-    print(numpy.matrix(matrix))
+    print(numpy.array(matrix))
+
+    L, U = LUDecomp(matrix)
+    x = Gaussian_Elimination(numpy.float64(matrix),numpy.float64(numpy.array(b)))
 
     print("\n\n")
     print("L=")
@@ -99,9 +78,11 @@ if __name__ == "__main__":
     print("\n\n")
 
     print("\n\n")
-    print("Answer:")
-
-    x = lu_solve(L,U,b)
+    print("x vector:")
+   
+   
+   
+    
 
     for num in range(len(x)):
         print("x" +str(num+1)+ "= " + str(x[num]))
@@ -192,11 +173,6 @@ if __name__ == "__main__":
 #PART D:
     print("\n\n")
     print("PART D:")
-
-# x1= -1.0000000000000984
-# x2= 1.999999999999556
-# x3= -3.0000000000015627
-# x4= 4.00000000000232
 
     for itter in range(7):
         print("[START OF ROUND " + str(itter+1) + "]: ")
